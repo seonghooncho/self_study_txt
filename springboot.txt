@@ -1,0 +1,172 @@
+Controller	- 외부요청 받음(View를 반환하기 위함)
+Service	- 비즈니스 로직 만듦
+Repository	- 데이터 저장
+
+이 것들의 의존성을 @Configration 으로 관리 (SpringConfig 클래스 따로 생성)
+
+db실행
+
+
+*****버전오류시 – project structure (SDK) or gradle 둘 다 버전확인 후 맞추기*****
+
+단축키
+(cntr shift a) - 		전체검색
+(cntr shift t) - 		main 클래스에서 test 틀 만들기
+(cntr Alt v) - 		함수만 적어도 자동으로 변수 
+(cntr shift Enter) - 	문장 알아서 완성해줌	‘);’
+(shift f10) - 		이전에 실행했던 것 다시 실행
+(Alt ins)	 - 		generate(사용잦은 단축키 모음)
+(Alt Enter) -		빨간 줄 해결
+예외
+IllegalStateException
+특정 메서드가 호출되거나 작업이 수행될 때, 현재 객체의 상태가 허용되지 않는 상태일 경우에 발생시키는 예외 (이미 존재하는 회원)
+
+어노테이션
+@beforeEach – 실행전에 실행(
+@AfterEach – 실행 후에 실행(변수값 초기화 등)
+
+@Autowired	- 의존성 주입을 위함	ex)@Service와 연결해줌(생성자1개면 생략가능)
+@Controller	- 외부요청 받음(View를 반환하기 위함)
+@Service	- 비즈니스 로직 만듦
+@Repository	- 데이터 저장
+Controller, Service, Repository 가 무엇일까? (velog.io)
+
+@GetMapping("/members/new")
+    public String creatFome() {
+        return "members /creat"; //members /creat위치의 코드 띄워라
+    }
+
+ @PostMapping("/members/new")
+ public String create(MemberForm form) {
+     //코드실행
+     return "redirect:/"; //“/”로 이동하라
+ }
+@SpringBootTest – spring 컨테이너와 테스트를 함께 실행
+@Transactional – springtest시 test가 끝나면 test전으로 롤백 (Test한개당 한번씩 롤백)
+			(일반적인 경우에서는 성공시 커밋(저장) 실패시만 롤백)
+			(Jpa는 모든 데이터 저장,변경을 트랜잭션 안에서 해야함)
+
+Map - 키와 벨류로 이루어진 값(딕셔너리)
+HashMap - 해시함수를 나머지연산한 값을 키 값으로
+public static Map<키의 타입, 벨류의 타입> a = new HashMap<>()
+	(Map 인터페이스를 HashMap으로 구현)
+Optional.ofNullable()	-이걸로 감싸면 null이 반환되어도 처리할 수 있음
+
+람다식 - 반환타입과 이름을 지움 ex) (a, b) -> a > b ? 1 : 2
+
+메타데이터 – 데이터의 정보를 담고있는 데이터 ex) 사진.class ==사진의 정보
+
+컬렉션 -자료구조 클레스의 모음
+ex) List<String> names = new ArrayList<>
+	(List 인터페이스를 ArrayList로 구현)
+
+stream - 데이터 처리를 위한 소스에서 추출된 연속된 요소
+다른 형의 데이터를 스트림으로 변환하면 같은 방식으로 사용가능(재사용성↑)
+원하는 형태로
+데이터 가공
+
+원하는 형태로 반환
+
+
+(Crew::getName -> Crew클레스의 메서드 getName)
+생성
+	컬렉션 : 객체.stream()
+	배열 : Arrays.stream(객체)
+중간연산
+	distinct() : 중복 데이터 있으면 예외 반환
+	filter() : 조건에 만족하는 데이터만 남김
+ 	sort() : 기본 기준 정렬
+	map() : 원하는 필드만 뽑아내거나 특정 형태로 변환
+	flatMap() : 평탄화 작업
+최종연산
+	forEach : 스트림의 데이터를 소모하며 출력	.forEach(System.out::println)
+	allMatch : 모두일치 true	
+	anyMatch : 하나라도 일치 true		.anyMatch(a -> a.equals(b))
+	nonMatch : 모두 불일치 true
+	findFirst : 조건에 일치하는 첫 번째 요소 반환	.findFirst()
+	findAny : 조건에 일치하는 요소 한 개 반환
+	collect : 스트림의 요소를 수집해 원하는 형태로 반환
+		Collectors – 정의된 컬렉터를 제공하는 클래스
+		collect(Collectors.groupingBy(person->person.contry()))
+	reduce : 데이터를 줄여나가며 연산 수행 후 최종결과 반환(합계 등 구할 때)
+
+ifPresent() - optional내에 값이 있으먼 꺼내라
+		ex) optionalValue.ifPresent(value -> System.out.println(value));
+
+Test – 프로그램이 정상 작동할 수 있는지(코드 길어지면 필요함)	(단축키 cntr shift t)
+
+test를 누적기록 삭제
+public void clearStore(){
+        store.clear();
+    }
+@AfterEach
+public void aftereach(){
+     repository.clearStore();
+ }
+
+예외검증
+assertThrows(ExpectedException.class, () -> {
+    // 예외가 발생할 수 있는 코드
+});
+
+값을 검증
+assertThat(실제 값).equalTo(“비교 값”);
+		   (검증조건)
+
+
+
+1. Client가 요청을 보낸다.(Ajax, Axios, fetch등..)
+2. 요청한 URL에 알맞은 Controller가 수신 받는다. (@Controller , @RestController)
+3. Controller 는 넘어온 요청을 처리하기 위해 Service 를 호출한다.
+4. Service는 알맞은 정보를 가공하여 Controller에게 데이터를 넘긴다.
+5. Controller 는 Service 의 결과물을 Client 에게 전달해준다.
+
+query() -  JDBC 사용하여 데이터베이스에서 데이터를 검색
+query(sql구문, (전달할 값(가변인자)), (ResultSetExtractor<T>r or RowMapper<T>r)
+ResultSetExtractor<T>
+ResultSet의 모든 행을 반복하며 데이터를 추출하여 T 타입 변환, 최종 결과를 반환()	RowMapper<T>
+(sql쿼리 실행결과 T로 변환)
+
+
+-----------------------------------
+(예외처리)
+public hi() throws SQLException{A}
+		==
+public hi() {
+try{A}
+catch{throws SQLException}
+-----------------------------------
+
+제네릭 – 클래스의 외부에서 클래스 내부의 타입지정
+
+class Person<T, S>{
+   public T a;
+   public S b; 
+   Person(T a, S b){
+	this.a = a;
+	this.b = b;
+}
+Integer e = new Integer(2);
+Man man = new man(“boy”);
+Person p1 = new Person(e, man);
+//Person<Integer, Man> p1 = new Person<Integer, Man>(e, man);
+//메서드에도 제네릭 적용가능
+//Person<T extends Object>	->Object의 자식클래스 이외 제한(래퍼클래스만 가능)
+래퍼클래스 – 기본타입 데이터를 객체로 다루기 위함 ex)Integer
+
+
+spring ioc 컨테이너
+객체를 생성,관리하고 의존성 주입(애플리케이션이 실행됨과 동시에 생성)
+spring bean - spring ioc 컨테이너가 사용하는 객체
+@Component 하면 그 자리에서 bean에 등록해줌
+@Autowired, @Service, @Repository, @Controller, @Component 등의 어노테이션 아래 메서드의 매개변수는 @Bean으로 등록한 객체에서 가져온다
+
+
+
+
+Spring data Jpa
+JpaRepository를 상속받으면 springdatajpa가 같이 상속받은 인터페이스의
+오버라이드한 메서드의 이름을 토대로 목적성에 맞게 메서드를 구현
+
+Aop - aop는 여러 곳에서 공통으로 반복하는 기능(시간측정 등)을 핵심로직과 분리하여 적용
+aop를 이용해서 메서드의 동작 시간을 확인하면 A메서드의 동작시간을 직접 찍어보지 않고 A메서드의 프록시에 찍어봐서 시간을 보여준 후 다시 그 메서드를 실행, A메서드는 B메서드의 프록시 호출
