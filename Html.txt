@@ -1,0 +1,47 @@
+서버로 html변수값 전달
+html
+<form action="주소" method="post">
+        이메일 : <input type="text" name="email"><br>
+        비밀번호 : <input type="text" name="password"><br>
+</form>
+
+controller
+@PostMapping("주소")
+    public String update(@ModelAttribute MemberDTO memberDTO) {
+        memberService.update(memberDTO);
+        return "/member/"
+    }
+
+-전송내용 form에 담아 전달하고 form 주소와 @ModelAttribute로 받음
+
+url에 값을 담아 보내기
+html
+<a th:href="@{|/member/${member.id}|}">
+
+controller
+@GetMapping("/member/{id}")
+    public String findById(@PathVariable(name = "id") Long id) {
+        return "detail";
+    }
+
+서버 값 html변수로 전달
+controller
+@GetMapping("/member/")
+    public String findAll(Model model) {
+	MemberDTO memberDTO;
+	model.addAttribute("member1, memberDTO);
+        List<MemberDTO> memberDTOList = memberService.findAll();
+        model.addAttribute("memberList", memberDTOList);
+        return "list";
+    }
+
+html
+<td th:text="${member1.memberEmail}"></td>
+
+(리스트의 경우 반복문사용)
+<tr th:each="member2 : ${memberList}">
+       <td th:text="${member2.name}">이름</td>
+       <td th:text="${member2.email}">이메일</td>
+</tr>
+
+-list.html에서 "member : ${memberList}"활용해서 받기
