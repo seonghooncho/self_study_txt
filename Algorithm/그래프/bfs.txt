@@ -1,0 +1,23 @@
+bfs
+가까운 노드부터 탐색 (주로 큐 사용)
+
+시간 복잡도: O(V + E)
+
+public void bfs(int start, List<List<Integer>> graph) {
+    boolean[] visited = new boolean[graph.size()];
+    Queue<Integer> queue = new ArrayDeque<>();
+    visited[start] = true;
+    queue.add(start);
+
+    while (!queue.isEmpty()) {
+        int v = queue.poll();
+        System.out.print(v + " ");
+
+        for (int i : graph.get(v)) {
+            if (!visited[i]) {
+                visited[i] = true;
+                queue.add(i);
+            }
+        }
+    }
+}
