@@ -1,0 +1,44 @@
+개선된 다익스트라
+
+설명
+단일 시작점에서 다른 모든 정점까지의 최단 경로를 찾는 알고리즘.
+우선순위 큐를 사용해 효율적으로 동작.
+음수 가중치가 없는 그래프에서 사용.
+
+시간복잡도 : O((V + E) log V)
+
+import java.util.*;
+
+class Node implements Comparable<Node> {
+    int vertex, weight;
+    Node(int vertex, int weight) { this.vertex = vertex; this.weight = weight; }
+    public int compareTo(Node other) { return Integer.compare(this.weight, other.weight); }
+}
+
+public class OptimizedDijkstra {
+    public int[] dijkstra(int start, List<List<Node>> graph) {
+        int[] dist = new int[graph.size()];
+        Arrays.fill(dist, Integer.MAX_VALUE);
+        dist[start] = 0;
+
+        PriorityQueue<Node> pq = new PriorityQueue<>();
+        pq.add(new Node(start, 0));
+
+        while (!pq.isEmpty()) {
+            Node node = pq.poll();
+            int u = node.vertex;
+
+            for (Node neighbor : graph.get(u)) {
+                int v = neighbor.vertex;
+                int weight = neighbor.weight;
+
+                if (dist[u] + weight < dist[v]) {
+                    dist[v] = dist[u] + weight;
+                    pq.add(new Node(v, dist[v]));
+                }
+            }
+        }
+        return dist;
+    }
+}
+  
