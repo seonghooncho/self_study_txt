@@ -1,0 +1,18 @@
+//이진탐색 : 중간 요소와 비교하여 탐색 범위를 절반으로 줄임
+//시간 복잡도: O(log n)
+
+public int binarySearch(int[] arr, int target) {
+    int left = 0, right = arr.length - 1;
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (arr[mid] == target) {
+            return mid;
+        }
+        if (arr[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    return -1; // 찾지 못했을 때
+}
