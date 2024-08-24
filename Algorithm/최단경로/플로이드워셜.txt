@@ -1,0 +1,26 @@
+플로이드-워셜
+
+설명
+모든 정점 쌍 간의 최단 경로를 계산하는 알고리즘.
+음수 가중치에선 사용 X
+
+시간 복잡도 : O(v^3)
+
+public void floydWarshall(int[][] graph, int V) {
+        //길이 없으면 Integer.MAX_VALUE;
+        //초기상태 복사해야 변경 안됨
+        int[][] dist = new int[V][V];
+        for (int i = 0; i < V; i++) {
+            for (int j = 0; j < V; j++) {
+                dist[i][j] = graph[i][j];
+            }
+        }
+        
+        for (int k = 0; k < V; k++) { // 중간에 거쳐가는 정점
+            for (int i = 0; i < V; i++) { // 시작 정점
+                for (int j = 0; j < V; j++) { // 도착 정점
+                    // i에서 k를 거쳐 j로 가는 경로가 더 짧으면 업데이트
+                    dist[i][j] = Math.min(dist[i][j], dist[i][k] + dist[k][j]);
+                }
+            }
+        }
