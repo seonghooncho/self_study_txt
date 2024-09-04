@@ -252,7 +252,10 @@ public void update(Long id, PostsDto.Request dto) {
     posts.update(dto.getTitle(), dto.getContent());
 }
 
-//위 코드의 경우 비영속상태의 postEntity를 findById(id)로 인해 영속성 컨택스트에 저장, 트랙잭션 커밋성공시 DB에 저장됨
+//위 코드 리뷰
+	-비영속상태의 postEntity를 findById(id)로 인해 영속성 컨택스트에 저장
+	-post.update() 로 변경된 부분이 변경감지에 의해 변경사항 추적
+	-트랙잭션 커밋으로 DB에 저장됨
 --------------------------------------------------------------------------------------------
 **flush : 영속성 컨텍스트의 변경 내용을 DB에 반영
 	flush(@Transactional) 호출시
