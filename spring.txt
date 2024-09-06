@@ -163,6 +163,7 @@ spring ioc 컨테이너
 spring bean - spring ioc 컨테이너가 사용하는 객체
 spring bean에서 가져옴
 @Autowired – 컨테이너 내부의 값을 가져와서 주입함
+@RequiredArgsConstructor - 변수생성하면 자동주입입
 spring bean에 등록
 @Service, @Repository, @Controller, @Component 등의 어노테이션 아래 메서드의 매개변수는 @Bean으로 등록한 객체에서 가져온다
 
