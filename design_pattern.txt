@@ -1,0 +1,98 @@
+디자인패턴
+===============================================================================================================================================================================
+  싱글톤패턴  
+  : 하나의 클래스에 대한 객체를 하나만 생성하는 것
+    [장점]
+    객체를 하나만 생성하여 불필요한 객체사용을 줄일 수 있다.
+    객체를 공유하여 다른 클래스에서도 사용할 수 있다
+    
+    [단점]
+    객체를 private으로 설정하기 때문에 자식클래스, 상속등을 활용하지 못함. (spring ioc 컨테이너가 이를 해결함)
+    여러 클래스에서 동시에 접근하면 동시성 문제가 발생할 수 있다.
+
+    [예시]
+    public class Singleton {
+
+    private static Singleton instance = new Singleton();
+    
+    private Singleton() {
+        // 생성자는 외부에서 호출못하게 private 으로 지정해야 한다.
+    }
+
+
+--------------------------------------------------------------------------------------------------
+  프록시패턴
+  : 객체를 사용하고자 할때, 객체를 직접적으로 참조하는 것이 아닌 해당 객체를 대항하는 객체를 통해 대상 객체에 접근하는 방식
+    -aop, @Transactional 등에서 사용
+   프록시패턴 장점
+[장점]
+사이즈가 큰 객체가 로딩되기 전에도 프록시를 통해 참조를 할 수 있다.
+실제 객체의 public, protected 메소드를 숨기고 인터페이스를 통해 노출시킬 수 있다.
+로컬에 있지 않고 떨어져있는 객체를 사용할 수 있다.
+원래 객체에 접근에 대해 사전처리를 할 수 있다.
+
+[단점]
+객체를 생성할 때 한 단계를 거치게 되므로, 빈번한 객체 생성이 필요한 경우 성능이 저하될 수 있다.
+프록시 내부에서 객체 생성을 위해 스레드가 생성, 동기화가 구현되어야 하는 경우 성능이 저하될 수 있다.
+로직이 난해해져 가독성이 떨어질 수 있다.
+
+[종류]
+
+  가상프록시
+      꼭 필요로 하는 시점까지 객체의 생성을 연기 (지연로딩)
+  원격프록시
+      원격 객체에 대한 접근을 제어 로컬 환경에 존재하며, 원격 객체에 대한 대변자 역할을 하는 객체 서로 다른 주소 공간에 있는 객체에 대해 마치 같은 주소 공간에 있는 것 처럼 동작하게 하는 패턴
+  보호프록시
+      주체 클래스에 대한 접근을 제어하기 위한 경우에 객체에 대한 접근 권한을 제어하거나 객체마다 접근 권한을 달리하고 싶을 경우 사용하는 패턴
+
+
+[예시]
+  // Image.java
+public interface Image {
+    public void displayImage();
+}
+// Real_Image.java
+public class Real_Image implements Image {
+	private String fileName;
+    
+    public Real_Image(String fileName) {
+    	this.fileName = fileName;
+    }
+    
+    private void loadFromDisk(String fileName) {
+    	System.out.println("로딩: " + fileName);
+    }
+    
+    @Override
+    public void displayImage() {
+        System.out.println("보여주기: " + fileName);
+    }
+}
+// Proxy_Image.java
+public class Proxy_Image implements Image {
+    private String fileName;
+    private Real_Image realImage;
+    
+    public Proxy_Image(String fileName) {
+    	this.fileName = fileName;
+    }
+    
+    @Override
+    public void displayImage() {
+    	if (realImage == null) {
+        	realImage = new Real_Image(fileName);
+        }
+        realImage.displayImage();
+    }
+}
+// Proxy_Pattern.javva
+public class Proxy_Pattern {
+    public static void main(String args[]) {
+        Image image1 = new Proxy_Image("test1.jpg);
+        Image image2 = new Proxy_Image("test2.jpg);
+        
+        image1.displayImage();
+        image2.displayImage();
+    }
+}
+  
