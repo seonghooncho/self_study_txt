@@ -1,0 +1,3 @@
+spring에서는 full outer join이 없기 때문에 lefter join, righter join을 union해야함
+스키마 == 데이터베이스
+(create database project1;)
