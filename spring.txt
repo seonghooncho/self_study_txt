@@ -327,3 +327,20 @@ DTO 대신 Recode를 사용하는 것에 대해
 간결하고 불변적인 구조를 선호하고 Java 16 이상을 사용한다면, Record가 더 적합할 수 있음, 특히 모바일기기, iot에서 사용시 멀티쓰레드의 성능차이 있음
 
 [출처] https://yozm.wishket.com/magazine/detail/2814/
+
+=============================================================================================================================================================================
+n+1문제
+연관 관계가 설정된 엔티티를 조회할 경우에 조회된 데이터 갯수(n) 만큼 연관관계의 조회 쿼리가 추가로 발생하여 데이터를 읽어오는 현상
+ex) TeamService.findAll(); 을 했을 때 모든 team을 가져오는 쿼리만 하나만 시행하지 않고 where team.id=1...5 각 team숫자만큼 Member를 가져오는 쿼리까지 실행함
+지연로의 경우에도  team 을 가져오고 해당 team과 연관관계에 있는 Member을 가져올때 team만 영속화 되어있기 때문에 어차피 나중에 연관 객를 가져올 때 또 프록시 객체를 매꾸기 위한 쿼리를 똑같이 발생시켜야 함
+
+
+해결방법
+fetch join : inner join 사용,	복잡한 쿼리, 다양한 조건에서 유리	@Query("select t from Team t join fetch t.users")
+
+Entity Grap : left outer join사용, 간단한 연관관계에서 유리		@EntityGraph(attributePaths = {"users"})
+
+일반 join 과 join fetch
+join :		실제 쿼리에서 SELECT 하는 Entity는오직 JPQL에서 조회하는 주체가 되는 Entity만 조회하여 영속화
+fetch join : 	조회의 주체가 되는 Entity 이외에 Fetch Join이 걸린 연관 Entity도 함께 SELECT 하여 모두 영속화
+
